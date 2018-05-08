@@ -12,6 +12,46 @@
 		
 		<p>Welcome to the chatapp</p>
 
+		<!-- setup the socket.io in the client side
+					
+			as socket.io is loaded in the html,
+			now we can use the socket.io js libraries.
+
+		 -->
+		<script src = "socket.io/socket.io.js"></script>
+		<script>
+			
+			// It is a method form socket.io.js lib.
+			// It is a "request" for the server 
+			// 		to open up the web socket 
+			//		and then to keep the connection open.
+
+			// As we setup the variable,
+			// 		the server is able to listen to 
+			// 		data from the server and send data //	   to the server.
+			const socket = io();
+
+			//Then find the google chrome -> network -> all
+			// we can see "socket.io.js" which starts the sokcet.io communication.
+			// Whenever the event occurs, the client and the server listen to it and execute that event.
+
+			// Once the server permit the connection,
+			//		the client get connected with the
+			//		statement like down below.
+			// not 'connection' in the server side.
+			socket.on('connect', () => {
+
+				console.log('connected to the server');
+
+			});
+
+			socket.on('disconnect', () => {
+
+				console.log('disconnected to the server');
+				
+			});
+
+		</script>
 	</body>
 
 
