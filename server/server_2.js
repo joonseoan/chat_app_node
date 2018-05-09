@@ -8,6 +8,8 @@ const http = require('http');
 
 const socketIO = require('socket.io');
 
+const { generateMessage } = require('./utils/message');
+
 const currentLocation = __dirname;
 
 const publicPath = path.join(currentLocation, '../public');
@@ -23,6 +25,39 @@ io.on('connection', (socket) => {
 // ========================================== message ==============================
 
 	console.log('New user connected.');
+
+	// 1)
+	// Andrew
+	// socket.emit('userjoined', {
+
+	// 	from: 'Admin',
+	// 	text: 'Welcome to the chatting room'
+	
+	// });
+
+
+	// 2)
+	socket.emit('userjoined', generateMessage('Admin', 'Welcome to the chatting room!!!'));
+
+	socket.broadcast.emit('userjoined', generateMessage('Admin', 'New user just joined!'));
+	
+	// my code
+	socket.on('userJoin', (message) => {
+
+		socket.emit('serverBroadcasting', { text : 'welcome!!!' });
+
+		socket.broadcast.emit('serverBroadcasting', { 
+
+			text : `Everyone, ${ message.text } just joined!`,
+			createAt: new Date()
+
+		});
+
+	});
+
+
+
+
 
 	// socket.emit('youGotMessage', {
 
@@ -42,13 +77,29 @@ io.on('connection', (socket) => {
 
 		// "io.emit: " to "broadcasting" any user including me
 		//		inside of the same network!!!
-		io.emit('youGotMessage', {
+		// io.emit('youGotMessage', {
 
-			from: message.to,
-			text: message.text,
-			createdAt: new Date().getTime()
+		// 	from: message.to,
+		// 	text: message.text,
+		// 	createdAt: new Date().getTime()
 
-		});
+		// });
+
+		// emit the message to the others, not to me
+		//		not to the sending client
+
+		// 1)
+		// socket.broadcast.emit('youGotMessage', {
+
+		// 	from: message.to,
+		// 	text: message.text,
+		// 	createdAt: new Date().getTime()
+
+		// });
+
+		// 2) by using reference variable, "generateMessage"
+		socket.broadcast.emit('youGotMessage', generateMessage(message.from, messsage.text));
+
 
 	});
 
