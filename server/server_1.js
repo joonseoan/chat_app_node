@@ -58,16 +58,53 @@ io.on('connection', (socket) => {
 
 	console.log('New user connected.');
 
+	// message challenge
+	socket.emit('youGotMessage', {
+
+		from : 'jsonChoo',
+		text : 'You are awesome',
+		createdAt: new Date()
+
+	});
+
+	socket.on('youWillSendMessage', (message) => {
+
+		console.log('YouWillSendMessage', message);
+
+	});
+
+	// generates and emit the event. Here newEmail!
+	// By default.
+	// socket.emit('newEmail');
+
+	// for args
+	socket.emit('youJustGotEmailfromOtherUser', { 
+
+		from : 'json@json.com',
+		text : 'what happened to my ad standing!',
+		createdAt: new Date()
+
+	});
+
+	// Listen to an event from the client
+
+	socket.on('YouJustCreatedEmailAndSentToUs', (newEmail) => {
+
+		console.log('a new email is created from the user', newEmail);
+
+	});
+
+
 	// not disconnection
 	socket.on('disconnect', () => {
 
 		console.log('disconnected to the client!!!');
 
 	});
+
 });
 
 // Then we should register socket in the client side too.
-
 
 app.use(express.static(publicPath));
 
