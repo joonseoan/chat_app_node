@@ -2,8 +2,7 @@ console.log('Now, starting socket.io test!');
 
 const expect = require('expect');
 
-const { generateMessage } = require('./message');
-
+const { generateMessage, generateLocationMessage } = require('./message');
 
 describe('generateMessage', () => {
 
@@ -20,6 +19,22 @@ describe('generateMessage', () => {
 			text
 
 		});
+
+	});
+
+});
+
+describe('generateLocationMessage', () => {
+
+	it('should generate correct Location', () => {
+
+		const from = 'Admin';
+		const lat = 'abc';
+		const long = 'def';
+		const locationMessage = generateLocationMessage(from, lat, long);
+
+		expect(locationMessage.createdAt).toBeA('number');
+		expect(locationMessage.url).toBe(`https://www.google.com/maps?=${lat},${long}`);
 
 	});
 

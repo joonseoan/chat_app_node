@@ -18,8 +18,22 @@
 			now we can use the socket.io js libraries.
 
 		 -->
+
+		 <ol id = "messages"></ol>
+
+		 <form id = "message-form">
+
+		 	<input type = "text" name = "message" placeholder = "Message" />
+		 	
+		 	<button> Send </button>
+
+		 </form>
+
+		 	<button id = "send-location">Send Location</button>
+
 		<script src = "socket.io/socket.io.js"></script>
-		<script src = "./js/index_2.js">
+		<script src = "./js/libs/jquery-3.3.1.min.js"></script>
+		<script src = "./js/index_3.js">
 			
 			// It is a method form socket.io.js lib.
 			// It is a "request" for the server 
@@ -66,7 +80,7 @@
 			// });
 
 		</script>
+	
 	</body>
-
 
 </html>

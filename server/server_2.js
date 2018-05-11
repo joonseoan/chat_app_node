@@ -22,19 +22,18 @@ const io = socketIO(server)
 
 io.on('connection', (socket) => {
 
-// ========================================== message ==============================
+// ========================================== message ====================================
 
 	console.log('New user connected.');
 
 	// 1)
 	// Andrew
-	// socket.emit('userjoined', {
+	socket.emit('userjoined', {
 
-	// 	from: 'Admin',
-	// 	text: 'Welcome to the chatting room'
+			from: 'Admin',
+			text: 'Welcome to the chatting room'
 	
-	// });
-
+	});
 
 	// 2)
 	socket.emit('userjoined', generateMessage('Admin', 'Welcome to the chatting room!!!'));
@@ -55,29 +54,25 @@ io.on('connection', (socket) => {
 
 	});
 
+	socket.emit('youGotMessage', {
 
+		from : 'jsonChoo',
+		text : 'You are awesome',
+		createdAt: new Date()
 
-
-
-	// socket.emit('youGotMessage', {
-
-	// 	from : 'jsonChoo',
-	// 	text : 'You are awesome',
-	// 	createdAt: new Date()
-
-	// });
+	});
 
 	// to show the user what that user just sent  
-	socket.on('youWillSendMessage', (message) => {
+	socket.on('youWillSendMessage', (message, callback) => {
 
 		console.log('YouWillSendMessage', message);
 
 		//  The message gets back onlty to me (client, browser).
 		// socket.emit('youGotMessage', {});
 
-		// "io.emit: " to "broadcasting" any user including me
+		// *****"io.emit: " to "broadcasting" any user including me
 		//		inside of the same network!!!
-		// io.emit('youGotMessage', {
+		//io.emit('youGotMessage', {
 
 		// 	from: message.to,
 		// 	text: message.text,
@@ -98,10 +93,18 @@ io.on('connection', (socket) => {
 		// });
 
 		// 2) by using reference variable, "generateMessage"
-		socket.broadcast.emit('youGotMessage', generateMessage(message.from, messsage.text));
+		// socket.broadcast.emit('youGotMessage', generateMessage(message.from, messsage.text));
 
+		io.emit('clientGotMessage', generateMessage(message.from, message.text));
+
+		// It is acknowledge to the client
+		callback('This is from the server');
 
 	});
+
+
+
+
 
 // ============================================ email =======================
 
