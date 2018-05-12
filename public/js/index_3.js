@@ -107,8 +107,8 @@ locationButton.on('click', function() {
 
 		socket.emit('createLocationMessage', {
 
-			latitude : position.coords.latitude,
-			longitude : position.coords.longitude
+			latitude: position.coords.latitude,
+			longitude: position.coords.longitude
 
 		});
 
