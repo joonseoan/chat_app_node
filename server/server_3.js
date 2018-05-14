@@ -24,12 +24,12 @@ io.on('connection', (socket) => {
 
 	console.log('New user connected.');
 
-	// (1) only moment when the user is just connected!!!
+	// (1) Only moment when a user is just connected!!!
 	// the message only to this user.
-	// "userjoined" = group id/name, browser = each client
+	// Let's just think "userjoined" = group id/name, browser = each client
 	socket.emit('userjoined', generateMessage('Admin', 'Welcome to the chatting room!!!'));
 
-	// (2) while the connection keeps maintained....
+	// (2) While the connection keeps maintained....
 	// The client is recognized on the basis of the browser unit.
 	// Therefore the new browser populated is a new client.
 	// The new user is not able to get this message.
@@ -39,7 +39,7 @@ io.on('connection', (socket) => {
 	socket.emit('youGotMessage', {
 
 		from: 'jsonChoo',
-		text: 'You are awesome',
+		text: 'You are awesome!',
 		createdAt: new Date()
 
 	});
@@ -49,19 +49,16 @@ io.on('connection', (socket) => {
 
 		console.log('clientSendingMessage: ', message);
 
+		// (1) 
 		// socket.broadcast.emit('youGotMessage', generateMessage(message.from, messsage.text));
 
 		// (2) while the connection keeps maintained....
 		io.emit('serverSendingMessage', generateMessage(message.from, message.text));
 
+
 		// It is "acknowledge" to the client
-		callback('This is from the server');
-
-	});
-
-	socket.on('disconnect', () => {
-
-		console.log('disconnected to the client!!!');
+		// It is the callback for 'clientSendingMessage'
+		callback();
 
 	});
 
@@ -79,7 +76,17 @@ io.on('connection', (socket) => {
 
 	});
 
+// =======================================================================
+
+
+	socket.on('disconnect', () => {
+
+		console.log('disconnected to the client!!!');
+
+	});
+
 });
+
 
 app.use(express.static(publicPath));
 

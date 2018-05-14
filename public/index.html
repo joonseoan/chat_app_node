@@ -5,13 +5,43 @@
 	<head>
 
 		<meta charset="utf-8">
-		
+		<link rel="stylesheet" href = "/css/styles.css"></link>	
+
 	</head>
 	
-	<body>
+	<body class = "chat">
 		
-		<p>Welcome to the chatapp</p>
+		<!-- <p>Welcome to the chatapp</p> -->
+		
+		<!-- for the left menubar -->
+		<div class = "chat__sidebar">
+			
+			<h3>People</h3>
+			<div id = "users"></div>
 
+		</div>
+
+		<div class = "chat__main">
+
+			<ol id = "messages" class = "chat__messages"></ol>
+
+			<div class = "chat__footer">
+				
+				<form id = "message-form">
+
+					<!-- we can use autocomplete attribute over here. -->
+			 		<input type = "text" name = "message" placeholder = "Message" autofocus autocomplete = "off" />
+			 	
+			 		<button> Send </button>
+
+				 </form>
+
+			 	<button id = "send-location">Send Location</button>
+
+			</div>
+
+		</div>
+		
 		<!-- setup the socket.io in the client side
 					
 			as socket.io is loaded in the html,
@@ -19,20 +49,16 @@
 
 		 -->
 
-		 <ol id = "messages"></ol>
-
-		 <form id = "message-form">
-
-		 	<input type = "text" name = "message" placeholder = "Message" />
-		 	
-		 	<button> Send </button>
-
-		 </form>
-
-		 	<button id = "send-location">Send Location</button>
-
 		<script src = "socket.io/socket.io.js"></script>
 		<script src = "./js/libs/jquery-3.3.1.min.js"></script>
+		
+		<!-- ******************import moment library here 
+			
+			After importing momentjs, we can test it in chrome.
+
+		-->
+		<script src = "./js/libs/moment.js"></script>
+		
 		<script src = "./js/index_3.js">
 			
 			// It is a method form socket.io.js lib.

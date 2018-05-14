@@ -34,7 +34,7 @@ describe('generateLocationMessage', () => {
 		const locationMessage = generateLocationMessage(from, lat, long);
 
 		expect(locationMessage.createdAt).toBeA('number');
-		expect(locationMessage.url).toBe(`https://www.google.com/maps?=${lat},${long}`);
+		expect(locationMessage.url).toBe(`https://www.google.ca/maps?=${lat},${long}`);
 
 	});
 

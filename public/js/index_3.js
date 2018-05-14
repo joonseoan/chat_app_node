@@ -1,3 +1,7 @@
+// We are not required to import 'moment js'
+//		because moment.js file is attached to the front.
+// const moment = require('moment');
+
 const socket = io();
 
 socket.on('connect', function() {
@@ -12,8 +16,7 @@ socket.on('userjoined', function (message) {
 	console.log( message.text );
 
 });
-
-// 
+ 
 socket.on('youGotMessage', function (message) {
 
 	console.log('I got this message', message);
@@ -23,21 +26,29 @@ socket.on('youGotMessage', function (message) {
 // ===================================== Message <html> ========================================
 
 // submit ===> emit
+// ".on" listens to submit  and takes value
 jQuery('#message-form').on('submit', function(e) {
 
+	// Without e.preventDefault(), the messages in the display board will dispear.
+	//		because the entire page will refresh.
 	e.preventDefault();
 
+	const textBoxMessage = jQuery('[name = message]');
+	
 	socket.emit('clientSendingMessage', {
 
 		from: 'User1',
 
 		// at the condition name = "message"
 		//		send "text value" inside of val();
-		text: jQuery('[name = message]').val()
+		text: textBoxMessage.val()
 	
 	}, function() {
 
-
+		// after sending message, remove that message
+		// Normally, se can send value inside of paranthesis.
+		// However, this time, we just need to remove the value.
+		textBoxMessage.val('');
 
 	});
 
@@ -47,9 +58,13 @@ socket.on('serverSendingMessage', function (message) {
 
 	console.log('I got this message', message);
 
+	// time stamp using the installed "momentjs"
+	// locationMessage.createdAt is changed to string in message.js file
+	const time = moment(message.createdAt).format('h:mm a');
+
 	// making <li> tag
 	const li = jQuery('<li></li>');
-	li.text(`${message.from}: ${message.text}`);
+	li.text(`${ message.from } (${ time }): ${ message.text }`);
 
 	jQuery('#messages').append(li);
 
@@ -99,12 +114,21 @@ locationButton.on('click', function() {
 
 	}
 
-	// "getCurrentPosition" fires up the process of geolocation 
+	// ****** Once the user clicks on the button, the button disabled.
+	// the first arg = attribute, the second one is value.
+	locationButton.attr('disabled', 'disabled');
+	locationButton.text('Sending location...');
+
+	// "getCurrentPosition" fires up the process of geolocation to get coordnates
 	// Uses Promise
-	navigator.geolocation.getCurrentPosition(function(position) {
+	navigator.geolocation.getCurrentPosition( function(position) {
+
+		// Associated with "locationButton.attr('disabled', 'disabled');"
+		// 		It removes "disabled" attribute and actived the button again.
+		locationButton.removeAttr('disabled');
+		locationButton.text('Send location');
 
 		// console.log(position.coords.latitude);
-
 		socket.emit('createLocationMessage', {
 
 			latitude: position.coords.latitude,
@@ -114,6 +138,10 @@ locationButton.on('click', function() {
 
 	}, function() {
 
+		// when the user fails to fetch data, just let them try it again.
+		locationButton.removeAttr('disabled');
+		locationButton.text('Send location');
+		
 		alert('Unable to fetch location: ');
 
 	});
@@ -126,7 +154,11 @@ socket.on('serverSendingLocationMessage', function(locationMessage) {
 	const li = jQuery('<li></li>');
 	const a = jQuery('<a target="_blank">My Current Location</a>');
 
-	li.text(`${locationMessage.from}: ` );
+	// time stamp using the installed "momentjs"
+	// locationMessage.createdAt is changed to string in message.js file
+	const time = moment(locationMessage.createdAt).format('h:mm a');
+
+	li.text(`${ locationMessage.from } (${ time }): ` );
 	a.attr('href', locationMessage.url);
 
 	li.append(a);
