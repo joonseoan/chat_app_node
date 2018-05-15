@@ -6,6 +6,47 @@
 
 const socket = io();
 
+function scrollToBottom() {
+
+	// Selectors
+	const messages = jQuery('#messages');
+	
+	// new Message = text inside of "<li>"
+	const newMessage = messages.children('li:last-child');
+
+	// Heights
+	// clientHeight : height of the browser.
+	// get property of <ol>
+	const clientHeight = messages.prop('clientHeight');
+	
+	// get prop beyond <ol>
+	// top beyond the browser's height
+	const scrollTop = messages.prop('scrollTop');
+
+	// get the entire height
+	const scrollHeight = messages.prop('scrollHeight');
+
+	// get the height of inner <li>
+	// innerHeight() caculates the height and apply it via css
+	const newMessageHeight = newMessage.innerHeight();
+
+	// the "text" inside of the previous <li> 
+	console.log("prev(): ", newMessage.prev());
+	const lastMessageHeight = newMessage.prev().innerHeight();	
+
+	// scrollHeight : Current entire height containg all message
+	// default : 0 and and it increases as we type messages.
+	if(clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+
+		// send previous messages to the scroll top 
+		//		which gets hidden beyond the top of the browser.
+		messages.scrollTop(scrollHeight);
+		console.log('Should scroll');
+
+	}
+
+}
+
 socket.on('connect', function() {
 
 	console.log('connected to the server');
@@ -58,8 +99,6 @@ jQuery('#message-form').on('submit', function(e) {
 
 socket.on('serverSendingMessage', function (message) {
 
-	
-
 	// console.log('I got this message', message);
 
 	// 2)
@@ -70,7 +109,6 @@ socket.on('serverSendingMessage', function (message) {
 	// html() => innerHtml : reads the text inside of the tag
 	// 1. grap the tag!
 	const template = jQuery('#message-template').html();
-	console.log('template', template)
 
 	// For the future use
 	Mustache.parse(template);
@@ -93,6 +131,9 @@ socket.on('serverSendingMessage', function (message) {
 	jQuery('#messages').append(html);
 
 	// 3. goest to index.html and setup template
+
+	// execute the function
+	scrollToBottom();
 
 // ==============================================
 
@@ -214,6 +255,8 @@ socket.on('serverSendingLocationMessage', function(locationMessage) {
 
 	jQuery('#messages').append(rendered);
 
+	// execute the scroll control.
+	scrollToBottom();
 
 	// 1)
 	// const li = jQuery('<li></li>');
