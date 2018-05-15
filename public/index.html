@@ -49,7 +49,57 @@
 
 		 -->
 
+
+
+
+		<!-- This is a way to import libs in javascript -->
+		
+		
+		<!-- type : let browser know what components are inside of tags
+
+			 must visit at: https://github.com/janl/mustache.js/ to understand it
+		
+		-->
+		<script id = "message-template" type = "text/template" >
+			
+			<li class = "message">
+				<div class = "message__title">
+
+					<h4>{{ from }}</h4>
+					<span>{{ createdAt }}</span>
+
+				</div>
+				<div class = "message__body">
+					<p>{{ text }}</p>
+				</div>
+			</li>
+
+		</script>
+
+		<script id = "location-message-template" type = "text/template" >
+			
+			<li class = "message">
+
+				<div class = "message__title">
+
+					<h4>{{ from }}</h4>
+					<span>{{ createdAt }}</span>
+
+				</div>
+
+				<div class = "message__body">
+				
+					<a href = "{{ url }}" target = "_blank" >My Current Location</a>
+				
+				</div>
+
+			</li>
+
+		</script>
+		
+		<!-- importing socket.io from the moule-->
 		<script src = "socket.io/socket.io.js"></script>
+		
 		<script src = "./js/libs/jquery-3.3.1.min.js"></script>
 		
 		<!-- ******************import moment library here 
@@ -57,7 +107,11 @@
 			After importing momentjs, we can test it in chrome.
 
 		-->
+		
 		<script src = "./js/libs/moment.js"></script>
+
+		<!-- added the mustache.js-->
+		<script src = "./js/libs/mustache.js"></script>
 		
 		<script src = "./js/index_3.js">
 			
@@ -67,7 +121,7 @@
 			//		and then to keep the connection open.
 
 			// As we setup the variable,
-			// 		the server is able to listen to 
+			// 		the client is able to listen to 
 			// 		data from the server and send data //	   to the server.
 			// const socket = io();
 

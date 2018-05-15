@@ -1,5 +1,3 @@
-
-
 // UTC Time Stamp : Jan 1st 1970 00:00:00 am
 
 // Based on the UTB up and above,
@@ -42,6 +40,8 @@ console.log(ddd.format('MMM Do YYYY'));
 const time = moment();
 console.log(time.format('h:mm a'));
 
+
+// When we use UTC time stamp!!!!!!!!!!!!!1111
 const createdAt = 123555555;
 const dattoo = moment(createdAt);
 console.log(dattoo.format('h:mm a'));

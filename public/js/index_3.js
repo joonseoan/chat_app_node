@@ -2,6 +2,8 @@
 //		because moment.js file is attached to the front.
 // const moment = require('moment');
 
+// mustachejs is same as above.
+
 const socket = io();
 
 socket.on('connect', function() {
@@ -43,10 +45,10 @@ jQuery('#message-form').on('submit', function(e) {
 		//		send "text value" inside of val();
 		text: textBoxMessage.val()
 	
-	}, function() {
+	}, function() { // 		// **************** [callback()]
 
 		// after sending message, remove that message
-		// Normally, se can send value inside of paranthesis.
+		// Normally, we can send value inside of paranthesis like val('message')
 		// However, this time, we just need to remove the value.
 		textBoxMessage.val('');
 
@@ -56,17 +58,55 @@ jQuery('#message-form').on('submit', function(e) {
 
 socket.on('serverSendingMessage', function (message) {
 
-	console.log('I got this message', message);
+	
 
-	// time stamp using the installed "momentjs"
-	// locationMessage.createdAt is changed to string in message.js file
+	// console.log('I got this message', message);
+
+	// 2)
+	// Using mustache js
+
 	const time = moment(message.createdAt).format('h:mm a');
 
-	// making <li> tag
-	const li = jQuery('<li></li>');
-	li.text(`${ message.from } (${ time }): ${ message.text }`);
+	// html() => innerHtml : reads the text inside of the tag
+	// 1. grap the tag!
+	const template = jQuery('#message-template').html();
+	console.log('template', template)
 
-	jQuery('#messages').append(li);
+	// For the future use
+	Mustache.parse(template);
+
+	// 2. config the tag gained up above
+	const html = Mustache.render(template, {
+
+		// These properites are to map with "template"
+		// Do not think about "generateMessage()" in the server side
+		text : message.text,
+		from : message.from,
+		createdAt : time
+
+	});
+
+	// 1) renders once
+	// jQuery('#messages').html(rendered);
+	
+	// 2) renders over and over
+	jQuery('#messages').append(html);
+
+	// 3. goest to index.html and setup template
+
+// ==============================================
+
+
+	// 1)
+	// // time stamp using the installed "momentjs"
+	// // locationMessage.createdAt is changed to string in message.js file
+	// const time = moment(message.createdAt).format('h:mm a');
+
+	// // making <li> tag
+	// const li = jQuery('<li></li>');
+	// li.text(`${ message.from } (${ time }): ${ message.text }`);
+
+	// jQuery('#messages').append(li);
 
 });
 
@@ -115,13 +155,19 @@ locationButton.on('click', function() {
 	}
 
 	// ****** Once the user clicks on the button, the button disabled.
-	// the first arg = attribute, the second one is value.
+	// ****** the first arg = attribute, the second one is value.
 	locationButton.attr('disabled', 'disabled');
+
+	// ****** input text in/on the buttton.
 	locationButton.text('Sending location...');
 
 	// "getCurrentPosition" fires up the process of geolocation to get coordnates
-	// Uses Promise
+	// [ Uses Promise ]
+	// MDN : navigator.geolocation.getCurrentPosition(success, error, [options])
 	navigator.geolocation.getCurrentPosition( function(position) {
+
+		// position:  Position {coords: Coordinates, timestamp: 1526336195603}
+		console.log('position: ', position);
 
 		// Associated with "locationButton.attr('disabled', 'disabled');"
 		// 		It removes "disabled" attribute and actived the button again.
@@ -151,17 +197,37 @@ locationButton.on('click', function() {
 // message from server with google map link
 socket.on('serverSendingLocationMessage', function(locationMessage) {
 
-	const li = jQuery('<li></li>');
-	const a = jQuery('<a target="_blank">My Current Location</a>');
-
-	// time stamp using the installed "momentjs"
-	// locationMessage.createdAt is changed to string in message.js file
+	// using mustache.js
 	const time = moment(locationMessage.createdAt).format('h:mm a');
+	
+	const template = jQuery('#location-message-template').html();
 
-	li.text(`${ locationMessage.from } (${ time }): ` );
-	a.attr('href', locationMessage.url);
+	Mustache.parse(template);
 
-	li.append(a);
-	jQuery('#messages').append(li);
+	const rendered = Mustache.render(template, {
+
+		url : locationMessage.url,
+		from : locationMessage.from,
+		createdAt : time
+
+	})
+
+	jQuery('#messages').append(rendered);
+
+
+	// 1)
+	// const li = jQuery('<li></li>');
+	// const a = jQuery('<a target="_blank">My Current Location</a>');
+
+	// // time stamp using the installed "momentjs"
+	// // locationMessage.createdAt is changed to string in message.js file
+
+	// li.text(`${ locationMessage.from } (${ time }): ` );
+	
+	// // attribute defintion
+	// a.attr('href', locationMessage.url);
+
+	// li.append(a);
+	// jQuery('#messages').append(li);
 
 });

@@ -55,10 +55,9 @@ io.on('connection', (socket) => {
 		// (2) while the connection keeps maintained....
 		io.emit('serverSendingMessage', generateMessage(message.from, message.text));
 
-
 		// It is "acknowledge" to the client
 		// It is the callback for 'clientSendingMessage'
-		callback();
+		callback(); // delete the message in the textbox in client.
 
 	});
 
@@ -68,16 +67,12 @@ io.on('connection', (socket) => {
 
 		console.log(coords);
 
-		// 1)
-		// io.emit('serverSendingMessage', generateMessage('Admin', `${coords.latitude}, ${coords.longitude}`));
-
-		// 2) 'serverSendingLocationMessage'
+		// 'serverSendingLocationMessage'
 		io.emit('serverSendingLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
 
 	});
 
 // =======================================================================
-
 
 	socket.on('disconnect', () => {
 
