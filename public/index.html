@@ -1,166 +1,52 @@
 <!DOCTYPE html>
 
 <html>
-
+	
 	<head>
-
 		<meta charset="utf-8">
-		<link rel="stylesheet" href = "/css/styles.css"></link>	
+		<title>Join | Chat</title>
 
+		<!-- 
+
+			- viewport: scalable in terms of device
+			- initial-scale : 1 (standard size) 
+		-->
+		<meta name = "viewport" content = "width = device-width initial-scale = 1 user-scalable = no">
+		<link rel = "stylesheet" href = "/css/styles.css">
 	</head>
-	
-	<body class = "chat">
+
+	<body class = "centered-form">
 		
-		<!-- <p>Welcome to the chatapp</p> -->
-		
-		<!-- for the left menubar -->
-		<div class = "chat__sidebar">
-			
-			<h3>People</h3>
-			<div id = "users"></div>
+		<div class = "centered-form__form">
 
-		</div>
+			<form action = "/chat.html">
 
-		<div class = "chat__main">
-
-			<ol id = "messages" class = "chat__messages"></ol>
-
-			<div class = "chat__footer">
-				
-				<form id = "message-form">
-
-					<!-- we can use autocomplete attribute over here. -->
-			 		<input type = "text" name = "message" placeholder = "Message" autofocus autocomplete = "off" />
-			 	
-			 		<button> Send </button>
-
-				 </form>
-
-			 	<button id = "send-location">Send Location</button>
-
-			</div>
-
-		</div>
-		
-		<!-- setup the socket.io in the client side
+				<div class = "form-field">
 					
-			as socket.io is loaded in the html,
-			now we can use the socket.io js libraries.
+					<h3>Join a Chat</h3>
+				</div>
+				<div class = "form-field">
 
-		 -->
-
-
-
-
-		<!-- This is a way to import libs in javascript -->
-		
-		
-		<!-- type : let browser know what components are inside of tags
-
-			 must visit at: https://github.com/janl/mustache.js/ to understand it
-		
-		-->
-		<script id = "message-template" type = "text/template" >
-			
-			<li class = "message">
-				<div class = "message__title">
-
-					<h4>{{ from }}</h4>
-					<span>{{ createdAt }}</span>
+					<label>Display name</label>
+					<input type = "text" name = "name" autofocus />
 
 				</div>
-				<div class = "message__body">
-					<p>{{ text }}</p>
-				</div>
-			</li>
-
-		</script>
-
-		<script id = "location-message-template" type = "text/template" >
-			
-			<li class = "message">
-
-				<div class = "message__title">
-
-					<h4>{{ from }}</h4>
-					<span>{{ createdAt }}</span>
-
-				</div>
-
-				<div class = "message__body">
-				
-					<a href = "{{ url }}" target = "_blank" >My Current Location</a>
+				<div class = "form-field">
+					
+					<label>Room Name</label>
+					<input type = "text" name = "room" />
 				
 				</div>
-
-			</li>
-
-		</script>
-		
-		<!-- importing socket.io from the moule-->
-		<script src = "socket.io/socket.io.js"></script>
-		
-		<script src = "./js/libs/jquery-3.3.1.min.js"></script>
-		
-		<!-- ******************import moment library here 
+				<div class = "form-field">
+					
+					<button>Join</button>
 			
-			After importing momentjs, we can test it in chrome.
-
-		-->
-		
-		<script src = "./js/libs/moment.js"></script>
-
-		<!-- added the mustache.js-->
-		<script src = "./js/libs/mustache.js"></script>
-		
-		<script src = "./js/index_3.js">
+				</div>
 			
-			// It is a method form socket.io.js lib.
-			// It is a "request" for the server 
-			// 		to open up the web socket 
-			//		and then to keep the connection open.
+			</form>
+		
+		</div>
 
-			// As we setup the variable,
-			// 		the client is able to listen to 
-			// 		data from the server and send data //	   to the server.
-			// const socket = io();
-
-			//Then find the google chrome -> network -> all
-			// we can see "socket.io.js" which starts the sokcet.io communication.
-			// Whenever the event occurs, the client and the server listen to it and execute that event.
-
-			// Once the server permit the connection,
-			//		the client get connected with the
-			//		statement like down below.
-			// not 'connection' in the server side.
-			// socket.on('connect', () => {
-
-			// 	console.log('connected to the server');
-
-			// });
-
-			// socket.on('disconnect', () => {
-
-			// 	console.log('disconnected to the server');
-
-			// });
-
-			// We gotta use es5, es6 because other than chrome, it does not work.
-
-			// socket.on('connect', function() {
-
-			// 	console.log('connected to the server');
-
-			// });
-
-			// socket.on('disconnect', function() {
-
-			// 	console.log('disconnected to the server');
-				
-			// });
-
-		</script>
-	
 	</body>
 
 </html>

@@ -11,23 +11,26 @@ function scrollToBottom() {
 	// Selectors
 	const messages = jQuery('#messages');
 	
-	// new Message = text inside of "<li>"
+	// new Message = texts inside of "<li>" 
+	//		that will be placed in the bottom of scrollHeight container
 	const newMessage = messages.children('li:last-child');
 
 	// Heights
-	// clientHeight : height of the browser.
-	// get property of <ol>
+	// clientHeight : height visible in the browser.
+	// get property of <ol> (1)
 	const clientHeight = messages.prop('clientHeight');
 	
 	// get prop beyond <ol>
-	// top beyond the browser's height
+	// top beyond the browser's height which is not visible
+	// scrollTop increases as same height as the one of newMessage (2)
 	const scrollTop = messages.prop('scrollTop');
 
 	// get the entire height
-	const scrollHeight = messages.prop('scrollHeight');
+	// default: 0 (3)
+	const scrollHeight = messages.prop('scrollHeight'); 
 
 	// get the height of inner <li>
-	// innerHeight() caculates the height and apply it via css
+	// innerHeight() caculates the height and apply it via css (4)
 	const newMessageHeight = newMessage.innerHeight();
 
 	// the "text" inside of the previous <li> 
@@ -40,6 +43,7 @@ function scrollToBottom() {
 
 		// send previous messages to the scroll top 
 		//		which gets hidden beyond the top of the browser.
+		// send height of message in the scrollHeight to "scrollTop"
 		messages.scrollTop(scrollHeight);
 		console.log('Should scroll');
 
