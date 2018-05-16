@@ -51,9 +51,6 @@
 
 		 -->
 
-
-
-
 		<!-- This is a way to import libs in javascript -->
 		
 		
@@ -65,15 +62,18 @@
 		<script id = "message-template" type = "text/template" >
 			
 			<li class = "message">
+			
 				<div class = "message__title">
 
 					<h4>{{ from }}</h4>
 					<span>{{ createdAt }}</span>
 
 				</div>
+			
 				<div class = "message__body">
 					<p>{{ text }}</p>
 				</div>
+			
 			</li>
 
 		</script>
@@ -109,13 +109,12 @@
 			After importing momentjs, we can test it in chrome.
 
 		-->
-		
 		<script src = "./js/libs/moment.js"></script>
 
 		<!-- added the mustache.js-->
 		<script src = "./js/libs/mustache.js"></script>
-		
-		<script src = "./js/chat_3.js">
+		<script src = "./js/libs/deparam.js"></script>
+		<script src = "./js/chat_4.js">
 			
 			// It is a method form socket.io.js lib.
 			// It is a "request" for the server 

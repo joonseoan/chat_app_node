@@ -11,7 +11,7 @@ function scrollToBottom() {
 	// Selectors
 	const messages = jQuery('#messages');
 	
-	// new Message = texts inside of "<li>" 
+	// new Message = texts inside of "<li> including itself" 
 	//		that will be placed in the bottom of scrollHeight container
 	const newMessage = messages.children('li:last-child');
 
