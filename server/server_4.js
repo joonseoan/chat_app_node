@@ -30,8 +30,12 @@ io.on('connection', (socket) => {
 	// socket.broadcast.emit('userjoined', generateMessage('Admin', 'New user just joined!'));
 
 	// We can use paranthes to make a promise.
+	// In the client side "socket.emit('join, param, (err) => {});"
+
 	// In the client, it concretes callback with an "err"
 	// Therefore, we need to make a promise when it has an error.
+
+	// Actually (params, callback) is a same format (param, (err) => ) up and above.
 	socket.on('join', (params, callback) => {
 
 		// The condition when we need to call callback
@@ -57,7 +61,7 @@ io.on('connection', (socket) => {
 
 		*/
 
-		// room is created channel?
+		// room maps with a specific channel
 		// join('string')
 		socket.join(params.room);
 
@@ -68,8 +72,8 @@ io.on('connection', (socket) => {
 		// We just need to send messages in "the room"
 		// BTW, "to" =>  target channel making the room
 		
-		// 1. io.emit -> io.to(params.room).emit
-		// 2. socket.broadcast -> socket.broadcast.to(params.room).emit
+		// 1. io.emit -> io.to(params.room).emit()
+		// 2. socket.broadcast -> socket.broadcast.to(params.room).emit()
 		// 3. socket.emit: specifically to one user -> 
 
 		socket.emit('serverSendingMessage', generateMessage('Admin', 'Welcome to the chatting room!!!'));
@@ -81,6 +85,7 @@ io.on('connection', (socket) => {
 		// However, if the callback function is defined, we must call callback.
 		// As a solution, we do not need to put parameters.
 		callback();
+
 	});
 
 	socket.emit('youGotMessage', {

@@ -46,6 +46,8 @@ socket.on('connect', function() {
 
 	// use "join" event from index.html
 	// Same format socket.emit('join', {object}, promise/callback)
+
+	// all client (browser) who has namespace of 'join'
 	socket.emit('join', param, function(err) {
 
 		if(err) {
