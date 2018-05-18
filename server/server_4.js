@@ -12,6 +12,8 @@ const { generateMessage, generateLocationMessage } = require('./utils/message');
 
 const { isRealString } = require('./utils/validate_string');
 
+const { Users } = require('./utils/users');
+
 const currentLocation = __dirname;
 
 const publicPath = path.join(currentLocation, '../public');
@@ -22,6 +24,8 @@ const server = http.createServer(app);
 	
 const io = socketIO(server)
 
+const users = new Users(); 
+
 io.on('connection', (socket) => {
 
 	console.log('New user connected.');
@@ -29,7 +33,7 @@ io.on('connection', (socket) => {
 	// socket.emit('userjoined', generateMessage('Admin', 'Welcome to the chatting room!!!'));
 	// socket.broadcast.emit('userjoined', generateMessage('Admin', 'New user just joined!'));
 
-	// We can use paranthes to make a promise.
+	// We can use parantheses to make a promise.
 	// In the client side "socket.emit('join, param, (err) => {});"
 
 	// In the client, it concretes callback with an "err"
@@ -43,11 +47,13 @@ io.on('connection', (socket) => {
 
 			// only when it has an error, execute a callback.
 			// '' is an parameter in the client side
-			callback('Name and room are required.');	
+			// Stop if the "params" is not available
+			return callback('Name and room are required.');	
 		
 		}
 
 		/*
+
 			You can call join to subscribe the socket to a given channel:
 
 			io.on('connection', function(socket){
@@ -65,6 +71,16 @@ io.on('connection', (socket) => {
 		// join('string')
 		socket.join(params.room);
 
+		// When the userr exists the room, not when the user is connected.
+		// user is deleted at the previous room
+		users.removeUser(socket.id);
+		
+		// socket.id???
+		// console.log('socket.id: ', socket.id)
+		
+		// and joins the new room
+		users.addUser(socket.id, params.name, params.room);
+
 		// leaving the room
 		// socket.leave(params.room);
 
@@ -76,6 +92,9 @@ io.on('connection', (socket) => {
 		// 2. socket.broadcast -> socket.broadcast.to(params.room).emit()
 		// 3. socket.emit: specifically to one user -> 
 
+		// sending messages to the room members only, then get user list.
+		io.to(params.room).emit('updateUserList', users.getUserList(params.room));
+		
 		socket.emit('serverSendingMessage', generateMessage('Admin', 'Welcome to the chatting room!!!'));
 		
 		//to(params.room) sending message just one room
@@ -98,9 +117,16 @@ io.on('connection', (socket) => {
 
 	socket.on('clientSendingMessage', (message, callback) => {
 
-		console.log('clientSendingMessage: ', message);
+		// console.log('clientSendingMessage: ', message);
 
-		io.emit('serverSendingMessage', generateMessage(message.from, message.text));
+		const user = users.getUser(socket.id);
+
+		// message to a room only
+		if (user && isRealString(message.text)) {
+
+			io.to(user.room).emit('serverSendingMessage', generateMessage(user.name, message.text));
+		}
+
 
 		callback(); // delete the message in the textbox in client.
 
@@ -110,17 +136,40 @@ io.on('connection', (socket) => {
 
 	socket.on('createLocationMessage', (coords) => {
 
-		console.log(coords);
+		// 1)
+		// location message
+		// console.log(coords);
 
-		io.emit('serverSendingLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
+		// only the room, including myself
+		//io.to(user.room).emit('serverSendingLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
 
+		const user = users.getUser(socket.id);
+
+		if(user && coords.latitude && coords.longitude) {
+
+			io.to(user.room).emit('serverSendingLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
+
+		}
 	});
 
 // =======================================================================
 
+// remove users when it refreshes or the user is disconnected.
 	socket.on('disconnect', () => {
 
-		console.log('disconnected to the client!!!');
+		// console.log('disconnected to the client!!!');
+
+		// socket.id : it is granted the client or browser from "socket".
+		console.log(socket.id); //  *****************whWQwjQf4FL16W54AAAA
+		
+		// When the cuser / client disconnects to the server
+		const user = users.removeUser(socket.id);
+
+		// notify the other users that some just left.
+		io.to(user.room).emit('serverSendingMessage', generateMessage('Admin', `${user.name} just left.`));
+
+		// Then, renew the list
+		io.to(user.room).emit('updateUserList', users.getUserList(user.room));
 
 	});
 

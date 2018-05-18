@@ -1,14 +1,14 @@
 const _ = require('lodash');
 
-[
+// [
 
-	{
-		id : '/sdfafa',
-		name : 'Joon',
-		room : 'The Office Fans'
-	}
+// 	{
+// 		id : '/sdfafa',
+// 		name : 'Joon',
+// 		room : 'The Office Fans'
+// 	}
 	
-]
+// ]
 
 // addUser(id, name, room)
 // removeUser (id) // remove use by the socket.id
@@ -67,7 +67,7 @@ class Users {
 
 		if (user) {
 
-			//*********8 renew the array without the object which has an "id"
+			//********* renew the array without the object which has an "id"
 			this.users = this.users.filter( users => users.id !== id);
 		}
 

@@ -55,7 +55,7 @@ socket.on('connect', function() {
 			// err is a message from the server's call
 			alert(err);
 
-			// global object
+			// global object: redirect
 			window.location.href = '/'; // inext.html
 
 		} else {
@@ -70,7 +70,7 @@ socket.on('connect', function() {
 
 // Andrew's code
 socket.on('userjoined', function (message) {
-
+	
 	console.log( message.text );
 
 });
@@ -129,6 +129,25 @@ socket.on('disconnect', function() {
 
 	console.log('disconnected to the server');
 				
+});
+
+socket.on('updateUserList', function(users) {
+
+	console.log('Users list', users);
+
+	const ol = jQuery('<ol></ol>');
+
+	// forEach...: map()
+	users.forEach(function(user) {
+
+		ol.append(jQuery('<li></li>').text(user));
+	
+	});
+
+	// append : increase user number in the userlist
+	// html : it doe not incease a number of the same user
+	jQuery('#users').html(ol);
+
 });
 
 const locationButton = jQuery('#send-location');
