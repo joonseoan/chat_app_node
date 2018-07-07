@@ -20,7 +20,7 @@
 ####
 #### 2. Client
 ####      - listening data from the server and rendering messages / data to a browser by utilizing mustache lib
-##### ![Clients](cleint.PNG)
+##### ![Clients](client.PNG)
 
 
 
