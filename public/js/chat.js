@@ -26,26 +26,10 @@ function scrollToBottom() {
 
 }
 
-// It is executed first when the user click "join" button. 
-// Therefore, 
 socket.on('connect', function() {
 
-	// console.log('connected to the server');
-
-	// global object : window.location
-	// location.search : value is a query string in URL.
-	// For instance, it contains "?name=joon&room=afa" as a string type.
-
-	// jQuery has a method to make query string.
-	// jQuery.param({ name: 'joon', age: 25}); // => "name=joon&age=25"
-	// Howerver, it can't process "+: space" and so on. 
-
-	// We need to install deparam.js. Then it makes us get value out of query string.
-	// Bear in mind that it is an opposite way to jQuery.param();
+	// need to install deparam.js. Then it makes us get value out of query string.
 	const param = jQuery.deparam(window.location.search);
-
-	// use "join" event from index.html
-	// Same format socket.emit('join', {object}, promise/callback)
 
 	// all client (browser) who has namespace of 'join'
 	socket.emit('join', param, function(err) {
@@ -68,7 +52,6 @@ socket.on('connect', function() {
 
 });
 
-// Andrew's code
 socket.on('userjoined', function (message) {
 	
 	console.log( message.text );
@@ -95,7 +78,7 @@ jQuery('#message-form').on('submit', function(e) {
 
 		text: textBoxMessage.val()
 	
-	}, function() { // 		// **************** [callback()]
+	}, function() { 
 
 		textBoxMessage.val('');
 
@@ -137,7 +120,6 @@ socket.on('updateUserList', function(users) {
 
 	const ol = jQuery('<ol></ol>');
 
-	// forEach...: map()
 	users.forEach(function(user) {
 
 		ol.append(jQuery('<li></li>').text(user));
@@ -210,6 +192,5 @@ socket.on('serverSendingLocationMessage', function(locationMessage) {
 	jQuery('#messages').append(rendered);
 
 	scrollToBottom();
-
 
 });

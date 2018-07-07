@@ -36,29 +36,25 @@
 			 	
 			 		<button> Send </button>
 
-				 </form>
+				</form>
 
 			 	<button id = "send-location">Send Location</button>
 
 			</div>
 
 		</div>
-		
-		<!-- setup the socket.io in the client side
-					
-			as socket.io is loaded in the html,
-			now we can use the socket.io js libraries.
 
-		 -->
-
-		<!-- This is a way to import libs in javascript -->
+		<!-- This is a way to import libraries in javascript -->
 		
 		
-		<!-- type : let browser know what components are inside of tags
+		<!-- 
+			
+			type : let browser know what components are inside of tags
 
-			 must visit at: https://github.com/janl/mustache.js/ to understand it
+			must visit at: https://github.com/janl/mustache.js/ to understand it
 		
 		-->
+
 		<script id = "message-template" type = "text/template" >
 			
 			<li class = "message">
@@ -100,6 +96,16 @@
 		</script>
 		
 		<!-- importing socket.io from the moule-->
+
+		<!-- 
+
+			setup the socket.io in the client side
+					
+			as socket.io is loaded in the html,
+			now we can use the socket.io js libraries.
+
+		-->
+
 		<script src = "socket.io/socket.io.js"></script>
 		
 		<script src = "./js/libs/jquery-3.3.1.min.js"></script>
@@ -114,7 +120,7 @@
 		<!-- added the mustache.js-->
 		<script src = "./js/libs/mustache.js"></script>
 		<script src = "./js/libs/deparam.js"></script>
-		<script src = "./js/chat_4.js">
+		<script src = "./js/chat.js">
 			
 			// It is a method form socket.io.js lib.
 			// It is a "request" for the server 
@@ -123,17 +129,17 @@
 
 			// As we setup the variable,
 			// 		the client is able to listen to 
-			// 		data from the server and send data //	   to the server.
+			// 		data from the server and send data to the server.
 			// const socket = io();
 
-			//Then find the google chrome -> network -> all
-			// we can see "socket.io.js" which starts the sokcet.io communication.
+			// Then find the google chrome -> network -> all
+			// **** we can see "socket.io.js" which starts the sokcet.io communication.
 			// Whenever the event occurs, the client and the server listen to it and execute that event.
 
-			// Once the server permit the connection,
-			//		the client get connected with the
+			// Once the server permits the connection,
+			//		the client gets connected with the
 			//		statement like down below.
-			// not 'connection' in the server side.
+			// FYI, Not 'connection' in the server side.
 			// socket.on('connect', () => {
 
 			// 	console.log('connected to the server');
